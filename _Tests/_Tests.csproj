@@ -163,6 +163,12 @@
     <Content Include="NUnit\tests\test-assembly.dll" />
     <Content Include="NUnit\tests\test-utilities.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\csFiler\csFiler.csproj">
+      <Project>{9FFEAA1D-224E-442C-A6D3-8540A10A8E25}</Project>
+      <Name>csFiler</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
