@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace csFiler
 {
@@ -13,6 +14,7 @@ namespace csFiler
         [STAThread]
         public static void Main()
         {
+            new Application().Run(new FilerWindow());
         }
     }
 }
