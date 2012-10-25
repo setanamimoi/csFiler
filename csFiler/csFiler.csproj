@@ -52,6 +52,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationExtentions.cs" />
     <Compile Include="FilerWindow.xaml.cs">
       <DependentUpon>FilerWindow.xaml</DependentUpon>
     </Compile>

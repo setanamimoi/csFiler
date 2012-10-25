@@ -26,7 +26,10 @@ namespace csFiler
         {
             if (Keyboard.IsKeyDown(Key.Enter) == true)
             {
-                Process.Start(this.processTextBox.Text);
+                var process = new ProcessStartInfo();
+                process.BindFromCommandLine(this.processTextBox.Text);
+
+                using (Process.Start(process)) { }
 
                 this.Close();
             }
