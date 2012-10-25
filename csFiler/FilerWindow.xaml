@@ -1,0 +1,8 @@
+﻿<Window x:Class="csFiler.FilerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FilerWindow" Height="64" Width="432">
+    <Grid>
+        <TextBox Name="processTextBox" />
+    </Grid>
+</Window>
