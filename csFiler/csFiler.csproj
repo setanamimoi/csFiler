@@ -58,6 +58,10 @@
     <Compile Include="FilerWindow.xaml.cs">
       <DependentUpon>FilerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Native\HotKey.cs" />
+    <Compile Include="Native\HotKeyMessageLoop.cs" />
+    <Compile Include="Native\Kernel32.cs" />
+    <Compile Include="Native\User32.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -92,6 +96,7 @@
   <ItemGroup>
     <Resource Include="csFiler.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)csFiler.ico" "$(ProjectDir)$(OutDir)csFiler.ico"</PostBuildEvent>

@@ -1,8 +1,11 @@
 ﻿using System;
-using Wpf = System.Windows;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows.Threading;
+using csFiler.Native;
+using Wpf = System.Windows;
 
 namespace csFiler
 {
@@ -34,7 +37,14 @@ namespace csFiler
                     Text = "csFiler",
                     ContextMenuStrip = contextMenu,
                 })
+            using (var hotKeyLoop = new HotKeyMessageLoop())
             {
+                HotKey openCommand = new HotKey(
+                    new Action(() => new FilerWindow().Show()), 
+                    Key.V, ModifierKeys.Windows);
+
+                hotKeyLoop.Add(openCommand);
+
                 contextMenu.Items.AddRange(
                     new ToolStripItem [] { 
                         commandMenu,
@@ -42,7 +52,7 @@ namespace csFiler
                     });
                 contextMenu.Click += new EventHandler((sender, e) =>
                 {
-                    new FilerWindow().Show();
+                    openCommand.Action.Invoke();
                 });
                 exitMenuItem.Click += new EventHandler((sender, e) =>
                 {
@@ -53,7 +63,7 @@ namespace csFiler
                 {
                     ShutdownMode = Wpf.ShutdownMode.OnExplicitShutdown,
                 };
-                application.DispatcherUnhandledException += new Wpf.Threading.DispatcherUnhandledExceptionEventHandler((sender, e) =>
+                application.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler((sender, e) =>
                 {
                     MessageBox.Show(
                         string.Concat("想定外のエラーが発生しました。",
@@ -62,6 +72,7 @@ namespace csFiler
                 });
                 application.Exit += new Wpf.ExitEventHandler((sender, e) =>
                 {
+                    hotKeyLoop.Dispose();
                     taskTray.Dispose();
                     contextMenu.Dispose();
                     exitMenuItem.Dispose();
