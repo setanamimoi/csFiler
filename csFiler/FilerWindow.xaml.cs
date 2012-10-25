@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Input;
 
 namespace csFiler
 {
@@ -13,6 +15,21 @@ namespace csFiler
         public FilerWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.processTextBox.Focus();
+        }
+
+        private void processTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.Enter) == true)
+            {
+                Process.Start(this.processTextBox.Text);
+
+                this.Close();
+            }
         }
     }
 }
