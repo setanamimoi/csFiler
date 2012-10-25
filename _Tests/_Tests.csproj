@@ -57,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="_ProcessStartInfo\BindFromCommandLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_String\IndexOfAll.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -162,6 +164,7 @@
     <Content Include="NUnit\tests\nunit.util.tests.dll" />
     <Content Include="NUnit\tests\test-assembly.dll" />
     <Content Include="NUnit\tests\test-utilities.dll" />
+    <Content Include="TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\csFiler\csFiler.csproj">
@@ -169,7 +172,11 @@
       <Name>csFiler</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>robocopy /E "$(ProjectDir)TestData" "$(ProjectDir)$(OutDir)TestData"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
