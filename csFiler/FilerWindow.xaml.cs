@@ -3,10 +3,13 @@
 namespace csFiler
 {
     /// <summary>
-    /// FilerWindow.xaml の相互作用ロジック
+    /// ファイラ画面
     /// </summary>
     public partial class FilerWindow : Window
     {
+        /// <summary>
+        /// FilerWindow の新しいインスタンスを初期化します。
+        /// </summary>
         public FilerWindow()
         {
             InitializeComponent();
