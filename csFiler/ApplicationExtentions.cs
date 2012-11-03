@@ -29,7 +29,7 @@ namespace csFiler
             var currentIndex = self.IndexOf(seek);
             while (true)
             {
-                if (currentIndex < (int)IntPtr.Zero)
+                if (currentIndex == -1)
                 {
                     break;
                 }
@@ -80,13 +80,13 @@ namespace csFiler
             var splitIndex = executeCommand.IndexOf(" ");
 
             //スペースが含まれる事を想定して条件分岐する
-            if (executeCommand.IndexOf('"') == (int)IntPtr.Zero)
+            if (executeCommand.IndexOf('"') == 0)
             {
                 //ダブルクォーテーションから始まるトークンは次のダブルクォーテーションまでを一つのトークンと認識する
                 //ファイルパスにダブルクォーテーションは含める事ができない為、エスケープされたダブルクォーテーションの可能性を無視する
                 var doubleQuotationIndex = executeCommand.IndexOf('"', 1);
 
-                if (doubleQuotationIndex < (int)IntPtr.Zero)
+                if (doubleQuotationIndex == -1)
                 {
                     throw new FormatException("コマンドラインに含まれるダブルクォーテーションの終端が閉じていません。トークンの終端としてダブルクォーテーションを含めてください。");
                 }
@@ -120,14 +120,14 @@ namespace csFiler
             }
 
             self.FileName = executeCommand;
-            if (splitIndex >= (int)IntPtr.Zero)
+            if (splitIndex != -1)
             {
                 self.FileName = string.Concat(executeCommand.Take(splitIndex));
             }
             self.FileName = self.FileName.Trim('"');
 
             self.Arguments = string.Empty;
-            if (splitIndex >= (int)IntPtr.Zero)
+            if (splitIndex != -1)
             {
                 self.Arguments = string.Concat(executeCommand.Skip(splitIndex)).Trim();
             }
