@@ -164,7 +164,9 @@
     <Content Include="NUnit\tests\nunit.util.tests.dll" />
     <Content Include="NUnit\tests\test-assembly.dll" />
     <Content Include="NUnit\tests\test-utilities.dll" />
-    <Content Include="TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt" />
+    <Content Include="TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\csFiler\csFiler.csproj">
@@ -175,7 +177,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>robocopy /E "$(ProjectDir)TestData" "$(ProjectDir)$(OutDir)TestData"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
