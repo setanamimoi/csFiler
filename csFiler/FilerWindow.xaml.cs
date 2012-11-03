@@ -20,6 +20,13 @@ namespace csFiler
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.processTextBox.Focus();
+
+            var intellisenceItemsSource = new string[] {
+                "control",
+                "notepad",
+            };
+            this.intellisenceListBox.ItemsSource = intellisenceItemsSource;
+            this.intellisence.IsOpen = true;
         }
 
         private void processTextBox_PreviewKeyDown(object sender, KeyEventArgs e)

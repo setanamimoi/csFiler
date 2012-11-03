@@ -4,5 +4,8 @@
         Title="FilerWindow" Height="64" Width="432" Loaded="Window_Loaded">
     <Grid>
         <TextBox Name="processTextBox" PreviewKeyDown="processTextBox_PreviewKeyDown" />
+        <Popup Name="intellisence">
+            <ListBox Name="intellisenceListBox" />
+        </Popup>
     </Grid>
 </Window>
