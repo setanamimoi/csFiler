@@ -26,7 +26,6 @@ namespace csFiler
                 "notepad",
             };
             this.intellisenceListBox.ItemsSource = intellisenceItemsSource;
-            this.intellisence.IsOpen = true;
         }
 
         private void processTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -39,7 +38,18 @@ namespace csFiler
                 using (Process.Start(process)) { }
 
                 this.Close();
+                e.Handled = true;
             }
+            else if (Keyboard.IsKeyDown(Key.Space) == true && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                this.intellisence.IsOpen = true;
+                e.Handled = true;
+            }
+        }
+
+        private void Window_Deactivated(object sender, System.EventArgs e)
+        {
+            this.intellisence.IsOpen = false;
         }
     }
 }
