@@ -23,6 +23,8 @@ namespace _Tests._ProcessStartInfo
         [TestCase(" notepad", "notepad", "")]
         [TestCase(@"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt -f -t", @"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt", "-f -t")]
         [TestCase(@"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt", @"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt", "")]
+        [TestCase(@"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data -f -t", @"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data", "-f -t")]
+        [TestCase(@"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data", @"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data", "")]
         [TestCase(@" TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt -f -t", @"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt", "-f -t")]
         [TestCase(@" TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt", @"TestData\_ProcessStartInfo\BindFromCommandLine\Test Data\notepad.txt", "")]
         public void コマンドラインがFileNameとArgumentsプロパティに反映される(

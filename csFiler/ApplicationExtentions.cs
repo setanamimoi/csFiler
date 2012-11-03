@@ -96,7 +96,7 @@ namespace csFiler
             else
             {
                 //一番長い文字列がパスである事を想定しパスが実在するか確認し、実在する場合は一つのトークンとして認識する
-                if (File.Exists(executeCommand) == true)
+                if (File.Exists(executeCommand) == true || Directory.Exists(executeCommand) == true)
                 {
                     splitIndex = executeCommand.Length;
                 }
@@ -110,7 +110,7 @@ namespace csFiler
                         var length = index + 1;
 
                         var commandPart = string.Concat(executeCommand.Take(length));
-                        if (File.Exists(commandPart) == true)
+                        if (File.Exists(commandPart) == true || Directory.Exists(commandPart) == true)
                         {
                             splitIndex = index;
                             break;
