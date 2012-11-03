@@ -33,7 +33,12 @@ namespace csFiler
                 taskTray.ContextMenuStrip = contextMenu;
 
                 var openCommand = new HotKey(
-                    new Action(() => new FilerWindow().Show()), 
+                    new Action(() => 
+                        {
+                            var window = new FilerWindow();
+                            window.WindowStartupLocation = Wpf.WindowStartupLocation.CenterScreen;
+                            window.Show();
+                        }), 
                     Key.V, ModifierKeys.Windows);
 
                 hotKeyLoop.Add(openCommand);
