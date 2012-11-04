@@ -5,7 +5,7 @@
     <Grid>
         <TextBox Name="processTextBox" PreviewKeyDown="processTextBox_PreviewKeyDown" />
         <Popup Name="intellisence">
-            <ListBox Name="intellisenceListBox" />
+            <ListBox Name="intellisenceListBox" PreviewKeyDown="intellisenceListBox_PreviewKeyDown" />
         </Popup>
     </Grid>
 </Window>
