@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace csFiler
 {
@@ -17,17 +18,99 @@ namespace csFiler
         public FilerWindow()
         {
             InitializeComponent();
+
+            var processTextBoxShortcutKey = new ShortcutKeyInvoker(this.processTextBox);
+            processTextBoxShortcutKey.Add(() =>
+            {
+                if (this.intellisenceListBox.Items.Count == 0)
+                {
+                    this.intellisence.IsOpen = false;
+                }
+                else
+                {
+                    this.intellisence.IsOpen = true;
+                }
+                return true;
+            }, Key.Space, ModifierKeys.Control);
+
+            processTextBoxShortcutKey.Add(() =>
+            {
+                MessageBox.Show("action");
+                return true;
+            }, Key.Space, ModifierKeys.Control | ModifierKeys.Alt);
+            processTextBoxShortcutKey.Add(() =>
+                {
+                    if (this.intellisence.IsOpen == false)
+                    {
+                        return false;
+                    }
+
+                    this.intellisenceListBox.SelectedIndex = 0;
+                    this.intellisenceListBox.FocusSelectedItem();
+                    return true;
+                }, Key.Down, ModifierKeys.None);
+            processTextBoxShortcutKey.Add(() =>
+                {
+                    var process = new ProcessStartInfo();
+                    process.BindFromCommandLine(this.processTextBox.Text);
+
+                    using (Process.Start(process)) { }
+
+                    this.Close();
+                    return true;
+                }, Key.Enter, ModifierKeys.None);
+            processTextBoxShortcutKey.Add(() =>
+                {
+                    if (this.intellisence.IsOpen == false)
+                    {
+                        return false;
+                    }
+
+                    if (this.intellisenceListBox.Items.Count != 1)
+                    {
+                        return false;
+                    }
+
+                    this.processTextBox.Text = Convert.ToString(this.intellisenceListBox.Items[0]);
+                    this.processTextBox.Select(this.processTextBox.Text.Length, 0);
+                    return true;
+                }, Key.Tab, ModifierKeys.None);
+            var intellisenceListBoxShortcutKey = new ShortcutKeyInvoker(this.intellisenceListBox);
+            intellisenceListBoxShortcutKey.Add(() => 
+                {
+                    if (this.intellisenceListBox.SelectedIndex != 0)
+                    {
+                        return false;
+                    }
+
+                    this.intellisenceListBox.SelectedIndex = -1;
+
+                    this.processTextBox.Focus();
+                    return true;
+                }
+            ,Key.Up, ModifierKeys.None);
+            var intellisenceDecide = new Func<bool>(() =>
+            {
+                this.processTextBox.Text = this.intellisenceListBox.SelectedItem as string;
+                this.processTextBox.Select(this.processTextBox.Text.Length, 0);
+
+                this.processTextBox.Focus();
+                return true;
+            });
+
+            intellisenceListBoxShortcutKey.Add(intellisenceDecide, Key.Tab, ModifierKeys.None);
+            intellisenceListBoxShortcutKey.Add(intellisenceDecide, Key.Enter, ModifierKeys.None);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.processTextBox.Focus();
 
-            var intellisenceItemsSource = new string[] {
-                "control",
-                "notepad",
-            };
-            this.intellisenceListBox.ItemsSource = intellisenceItemsSource;
+            this.intellisenceListBox.ItemsSource = 
+                new string[] {
+                    "control",
+                    "notepad",
+                };
         }
 
         private void Window_Deactivated(object sender, System.EventArgs e)
@@ -35,51 +118,32 @@ namespace csFiler
             this.intellisence.IsOpen = false;
         }
 
-        private void processTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void processTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Keyboard.IsKeyDown(Key.Space) == true && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            var inputText = this.processTextBox.Text.Trim();
+
+            this.intellisenceListBox.Items.Filter = (x) =>
             {
-                this.intellisence.IsOpen = true;
-                e.Handled = true;
-            }
-            else if (Keyboard.IsKeyDown(Key.Down) == true)
-            {
-                if (this.intellisence.IsOpen == false)
+                var listItem = x as string;
+
+                if (listItem == null)
                 {
-                    return;
+                    return false;
                 }
 
-                this.intellisenceListBox.Focus();
-                this.intellisenceListBox.SelectedIndex = 0;
-                var selectedItem = this.intellisenceListBox.ItemContainerGenerator.ContainerFromIndex(this.intellisenceListBox.SelectedIndex) as ListBoxItem;
-                selectedItem.Focus();
-                e.Handled = true;
-            }
-            else if (Keyboard.IsKeyDown(Key.Enter) == true)
-            {
-                var process = new ProcessStartInfo();
-                process.BindFromCommandLine(this.processTextBox.Text);
-
-                using (Process.Start(process)) { }
-
-                this.Close();
-                e.Handled = true;
-            }
-        }
-
-        private void intellisenceListBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (Keyboard.IsKeyDown(Key.Up) == true)
-            {
-                if (this.intellisenceListBox.SelectedIndex != 0)
+                if (listItem == inputText)
                 {
-                    return;
+                    return false;
                 }
 
-                this.intellisenceListBox.SelectedIndex = -1;
-                this.processTextBox.Focus();
-                e.Handled = true;
-            }
+                return listItem.Contains(inputText);
+            };
+
+            bool isAnyIntellisence = this.intellisenceListBox.Items.Cast<object>().Any();
+
+            this.intellisence.IsOpen = isAnyIntellisence;
+            e.Handled = true;
+            return;
         }
     }
 }
