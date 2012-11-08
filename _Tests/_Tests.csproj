@@ -20,8 +20,8 @@
     <StartProgram>$(SolutionDir)\_Tests\NUnit\nunit.exe</StartProgram>
     <StartArguments>_Tests.dll</StartArguments>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
