@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace csFiler
 {
@@ -11,6 +12,29 @@ namespace csFiler
     /// </summary>
     public static class ApplicationExtention
     {
+        /// <summary>
+        /// 現在選択されている最初の項目にキーボード フォーカスを設定します。
+        /// </summary>
+        /// <param name="self">拡張元の ListBox クラスのインスタンス</param>
+        public static void FocusSelectedItem(this ListBox self)
+        {
+            self.Focus();
+
+            var selectedIndex = self.SelectedIndex;
+
+            var selectedItem = self.ItemContainerGenerator
+                .ContainerFromIndex(selectedIndex);
+
+            var selecteListBoxItem = selectedItem as ListBoxItem;
+
+            if (selecteListBoxItem == null)
+            {
+                return;
+            }
+
+            selecteListBoxItem.Focus();
+        }
+
         /// <summary>
         /// 指定した Unicode 文字がこの文字列内で見つかった位置のインデックスをレポートします。
         /// </summary>
