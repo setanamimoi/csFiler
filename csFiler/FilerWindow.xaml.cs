@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace csFiler
 {
@@ -12,12 +13,23 @@ namespace csFiler
     /// </summary>
     public partial class FilerWindow : Window
     {
+        private static readonly string historyFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "@setanamimoi", "History.txt");
+
         /// <summary>
         /// FilerWindow の新しいインスタンスを初期化します。
         /// </summary>
         public FilerWindow()
         {
             InitializeComponent();
+
+            if (System.IO.File.Exists(historyFilePath) == false)
+            {
+                if (new System.IO.FileInfo(historyFilePath).Directory.Exists == false)
+                {
+                    new System.IO.FileInfo(historyFilePath).Directory.Create();
+                }
+                using (System.IO.File.Create(historyFilePath)) { }
+            }
 
             var processTextBoxShortcutKey = new ShortcutKeyInvoker(this.processTextBox);
             processTextBoxShortcutKey.Add(() =>
@@ -56,6 +68,14 @@ namespace csFiler
 
                     using (Process.Start(process)) { }
 
+                    if (this.intellisenceSource.Select(x => x.ToUpper()).Contains(this.processTextBox.Text) == false)
+                    {
+                        using (var writer = new System.IO.StreamWriter(historyFilePath, true, System.Text.Encoding.GetEncoding(932)))
+                        {
+                            writer.WriteLine(this.processTextBox.Text);
+                        }
+                        this.intellisenceSource.Add(this.processTextBox.Text);
+                    }
                     this.Close();
                     return true;
                 }, Key.Enter, ModifierKeys.None);
@@ -102,15 +122,20 @@ namespace csFiler
             intellisenceListBoxShortcutKey.Add(intellisenceDecide, Key.Enter, ModifierKeys.None);
         }
 
+        private ObservableCollection<string> intellisenceSource = new ObservableCollection<string>();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.processTextBox.Focus();
 
-            this.intellisenceListBox.ItemsSource = 
-                new string[] {
-                    "control",
-                    "notepad",
-                };
+            this.intellisenceListBox.ItemsSource = intellisenceSource;
+            
+            using (var reader = new System.IO.StreamReader(historyFilePath, System.Text.Encoding.GetEncoding(932)))
+            {
+                for (string line = reader.ReadLine(); line != null; line = reader.ReadLine())
+                {
+                    this.intellisenceSource.Add(line);
+                }
+            }
         }
 
         private void Window_Deactivated(object sender, System.EventArgs e)
