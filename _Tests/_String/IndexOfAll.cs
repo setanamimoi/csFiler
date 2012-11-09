@@ -8,7 +8,6 @@ namespace _Tests._String
     [TestFixture]
     public class IndexOfAll
     {
-        [Test]
         [TestCase("a b c", ' ',new int[] { 1, 3 })]
         [TestCase("a", ' ', new int[] { })]
         public void 全てのインデックスが取得できる(string target, char separator, int[] expected)
@@ -23,7 +22,6 @@ namespace _Tests._String
             }
         }
 
-        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void selfがnullの場合例外がスローされる()
         {
